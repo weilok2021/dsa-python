@@ -188,5 +188,60 @@ class TestDynamicArrayRemove(unittest.TestCase):
         self.assertTrue(b.is_empty())
 
 
+class TestDynamicArrayFind(unittest.TestCase):
+    def setUp(self):
+        self.a = DynamicArray()
+        for i in [10, 20, 30, 40, 50]:
+            self.a.push(i)
+
+    def test_find_existing_item(self):
+        self.assertEqual(self.a.find(30), 2)
+
+    def test_find_first_occurrence(self):
+        self.a.push(30)
+        self.assertEqual(self.a.find(30), 2)
+
+    def test_find_nonexistent_item(self):
+        self.assertEqual(self.a.find(99), -1)
+
+    def test_find_in_empty_array(self):
+        b = DynamicArray()
+        self.assertEqual(b.find(1), -1)
+    
+
+class TestDynamicArrayStress(unittest.TestCase):
+    def test_large_number_of_appends_and_deletes(self):
+        arr = DynamicArray()
+        for i in range(1000):
+            arr.push(i)
+        self.assertEqual(arr.size(), 1000)
+
+        for _ in range(990):
+            arr.delete(0)
+        self.assertLessEqual(arr.capacity(), 1024)  # ensures it shrinks
+
+    def test_remove_then_append_pattern(self):
+        arr = DynamicArray()
+        for i in [1, 2, 3, 2, 4]:
+            arr.push(i)
+        arr.remove(2)
+        arr.push(2)
+        self.assertEqual(arr.to_list(), [1, 3, 4, 2])
+
+
+class TestDynamicArrayIntegration(unittest.TestCase):
+    def test_combined_operations(self):
+        arr = DynamicArray()
+        arr.push(10)
+        arr.push(20)
+        arr.insert(1, 15)
+        arr.delete(0)
+        arr.remove(20)
+        arr.push(25)
+        self.assertEqual(arr.to_list(), [15, 25])
+        self.assertEqual(arr.size(), 2)
+
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -126,6 +126,13 @@ class DynamicArray:
                 i += 1
 
 
+    def find(self, item):
+        for i in range(self.size()):
+            if self._array[i] == item:
+                return i
+        return -1
+
+
     def to_list(self):
         """Return the current elements as a regular Python list."""
         return [self._array[i] for i in range(self._size)]
@@ -143,10 +150,8 @@ class DynamicArray:
 b = DynamicArray()
 for _ in range(3):
     b.push(7)
-b.push(1)
-b.push(2)
-b.push(3)
-b.remove(7)
-b.remove(3)
+b.prepend(1)
+b.prepend(2)
+b.prepend(3)
 print(b.to_list(), b.size())
 
