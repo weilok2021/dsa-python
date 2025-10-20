@@ -42,40 +42,38 @@ class Node:
 
 # LinkedList implementation without tail pointer
 class LinkedList:
-    # def __init__(self):
-    #     self.head = Node("HEAD")
-    #     self._size = 0
-    
-    # # Getter that returns self._size instance variable
-    # def size(self):
-    #     return self._size
+    def __init__(self):
+        self.__first = None
+        self.__size = 0
     
 
-    # def is_empty(self):
-    #     return self.size() == 0
-
-
-    # def push_front(self, value):
-    #     # Initialize new node to be pushed
-    #     node = Node(value) 
-    #     # IF this is an empty linkedlist, point head to the new node
-    #     if self.is_empty():
-    #         self.head.next = node
-    #     else:
-    #         # Point this new node to first node, which is head
-    #         node.next = self.head.next
-    #         self.head.next = node
-    #     self._size += 1
-
+    def get_first(self):
+        return self.__first
     
-    def __str__(self):
-        temp = self.head
-        ll_repr = ""
-        while temp != None and not self.is_empty():
-            ll_repr += f"{temp.value} -> "
-            temp = temp.next
-        ll_repr += "NULL"
-        return ll_repr
+
+    def set_first(self, node):
+        if node == None or isinstance(node, Node):
+            self.__first = node
+        else:
+            raise ValueError("First node of linked list must be none or a node")
+    
+
+    def is_empty(self):
+        return self.get_first() is None
+    
+
+    def size(self):
+        return self.__size
+    
+
+    def push_front(self, value):
+        # Initialize new first node, then point it's next to the old first node or None 
+        first_node = Node(value, self.get_first())
+        # Set this new first node to be the first
+        self.set_first(first_node)
+
+
+
 
 
                 
