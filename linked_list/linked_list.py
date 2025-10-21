@@ -74,14 +74,83 @@ class LinkedList:
         self.__size -= 1
 
 
+    def value_at(self, index):
+        if index < 0 or index >= self.size():
+            raise IndexError("Index out of bound")
+        first = self.get_first()
+        first_index = 0
+        while first_index < index:
+            first = first.get_next()
+            first_index += 1
+        return first.get_data()
+
+
     def push_front(self, value):
-        if not isinstance(value, Node):
+        if isinstance(value, Node):
             raise TypeError("push_front expects a value, not a Node object")
         # Initialize new first node, then point it's next to the old first node or None 
         new_first_node = Node(value, self.get_first())
         # Set this new first node to be the first
         self.set_first(new_first_node)
         self.inc_size()
+
+    
+    def pop_front(self):
+        if self.is_empty():
+            raise Exception("Can't remove front from an empty list")
+        first_node = self.get_first()
+        first_data = first_node.get_data()
+        self.set_first(first_node.get_next())
+        self.dec_size()
+        return first_data
+    
+
+    # push the item to the end of the linked list
+    def push_back(self, value):
+        new_last_node = Node(value)
+        # if this is an empty list, point the first reference to this new last node
+        if self.is_empty():        
+            self.set_first(new_last_node)
+        else:
+            old_last_node = self.get_first()
+            # Traverse the list to get the last node
+            while old_last_node.get_next() != None:
+                old_last_node = old_last_node.get_next()
+            # point the next of old last node to new last node
+            old_last_node.set_next(new_last_node)
+        self.inc_size()
+    
+
+    # Pop the item out from the end of linked list
+    def pop_back(self):
+        if self.is_empty():
+            raise Exception("Can't pop back for an empty list")
+        # IF there's only one element in the list, this element is the last element
+        elif self.size() == 1:
+            last_data = self.back()
+            self.set_first(None)
+            self.dec_size()
+            return last_data
+        else:
+            # get the last node value to be returned later
+            last_data = self.back()
+            second_last_node = self.get_first()
+            # traverse list to get the second last node
+            while second_last_node.get_next().get_next() != None:
+                second_last_node = second_last_node.get_next()
+            # point the next of second last node to None
+            second_last_node.set_next(None)
+            self.dec_size()
+            return last_data
+    
+    
+    def back(self):
+        if self.is_empty():
+            raise Exception("No back for an empty list")
+        last_node = self.get_first()
+        while last_node.get_next() != None:
+            last_node = last_node.get_next()
+        return last_node.get_data()
 
 
     def front(self):
@@ -110,6 +179,8 @@ ll = LinkedList()
 ll.push_front(3)
 ll.push_front(2)
 ll.push_front(1)
+print(ll.front())
+print(ll.size())
 print(ll)
 
 
