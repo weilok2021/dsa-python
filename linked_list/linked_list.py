@@ -66,13 +66,51 @@ class LinkedList:
         return self.__size
     
 
+    def inc_size(self):
+        self.__size += 1
+    
+
+    def dec_size(self):
+        self.__size -= 1
+
+
     def push_front(self, value):
+        if not isinstance(value, Node):
+            raise TypeError("push_front expects a value, not a Node object")
         # Initialize new first node, then point it's next to the old first node or None 
-        first_node = Node(value, self.get_first())
+        new_first_node = Node(value, self.get_first())
         # Set this new first node to be the first
-        self.set_first(first_node)
+        self.set_first(new_first_node)
+        self.inc_size()
 
 
+    def front(self):
+        if self.is_empty():
+            raise Exception("No front for an empty list")
+        first_node = self.get_first()
+        return first_node.get_data()
+
+    
+    def __str__(self):
+        list_repr = ""
+        if not self.is_empty():
+            first = self.get_first()
+            while first:
+                list_repr += f"[{first.get_data()}] -> "
+                first = first.get_next()
+        list_repr += "None"
+        return list_repr
+
+
+# node1 = Node(1)
+# node2 = Node(2)
+# node3 = Node(3)
+
+ll = LinkedList()
+ll.push_front(3)
+ll.push_front(2)
+ll.push_front(1)
+print(ll)
 
 
 
